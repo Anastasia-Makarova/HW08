@@ -1,4 +1,6 @@
 from datetime import date, datetime, timedelta
+from collections import defaultdict
+
 
 def get_period(start_date:date, days:int):
     week = {}
@@ -9,59 +11,26 @@ def get_period(start_date:date, days:int):
     return week
 
 
-
 def get_birthdays_per_week(users):
-    if len(users) == 0:
-        users = {}
-    else:
+    
+    start_date = date.today()
+    period = get_period(start_date, 7)
 
-        start_date = date.today()
-        period = get_period(start_date, 7)
-
-
-        week_days = ("Monday","Tuesday","Wednesday","Thursday","Friday")
-
-        monday = []
-        tuesday = []
-        wednesday = []
-        thursday = []
-        friday = []
-        b_day_weekly = [monday, tuesday, wednesday, thursday, friday]
+    result = defaultdict(list)
 
 
-        for user in users:
-            b_day: date = user["birthday"]
-            if (b_day.day, b_day.month) in list(period):
+    for user in users:
+        b_day: date = user["birthday"]
+        if (b_day.day, b_day.month) in list(period):
+            b_day = b_day.replace(year=period.get((b_day.day, b_day.month)))
+            bd_weekday = b_day.weekday()
+            if bd_weekday in (5, 6):
+                result["Monday"].append(user["name"])
+            else:
+                result[b_day.strftime("%A")].append(user["name"])
 
-                if date(start_date.year, b_day.month, b_day.day).weekday() == 0:
-                    monday.append(user["name"] )
 
-                elif date(start_date.year, b_day.month, b_day.day).weekday() == 1:
-                    tuesday.append(user["name"] )
-
-                elif date(start_date.year, b_day.month, b_day.day).weekday() == 2:
-                    wednesday.append(user["name"] )
-
-                elif date(start_date.year, b_day.month, b_day.day).weekday() == 3:
-                    thursday.append(user["name"] )
-
-                elif date(start_date.year, b_day.month, b_day.day).weekday() == 4:
-                    friday.append(user["name"] )
-
-                else:
-                    monday.append(user["name"] )
-
-            b_day_dct = weekend_move(start_date, 7, b_day_weekly)
-
-                
-        users = {}
-        for item in b_day_dct.items():
-
-            if len(item[1]) > 0:
-                users[item[0]] = item[1]
-         
-
-    return users
+    return result
 
 
 def weekend_move(day: date, days:int, birthdays:list):
@@ -99,7 +68,3 @@ if __name__ == "__main__":
     # Виводимо результат
     for day_name, names in result.items():
         print(f"{day_name}: {', '.join(names)}")
-  
-     
-    
-
