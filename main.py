@@ -27,7 +27,7 @@ def get_birthdays_per_week(users):
         thursday = []
         friday = []
         b_day_weekly = [monday, tuesday, wednesday, thursday, friday]
-        b_day_dct = weekend_move(start_date, 7)
+
 
         for user in users:
             b_day: date = user["birthday"]
@@ -51,25 +51,27 @@ def get_birthdays_per_week(users):
                 else:
                     monday.append(user["name"] )
 
-        dct_start_index = int(start_date.weekday())
-        for key in b_day_dct.items():
-            if dct_start_index <= 4:
-                b_day_dct[key] = b_day_weekly[dct_start_index]
-                dct_start_index += 1
-            else:
-                dct_start_index = 0
-                b_day_dct[key] = b_day_weekly[dct_start_index]
-                dct_start_index += 1
-            # if b_day_dct[key] == "Monday":
-            #     b_day_dct[key] = b_day_weekly[0]
-            # elif b_day_dct[key] == "Tuesday":
-            #     b_day_dct[key] = b_day_weekly[1]
-            # elif b_day_dct[key] == "Wednesday":
-            #     b_day_dct[key] = b_day_weekly[2]
-            # elif b_day_dct[key] == "Thursday":
-            #     b_day_dct[key] = b_day_weekly[3]
-            # else:
-            #     b_day_dct[key] = b_day_weekly[4]
+            b_day_dct = weekend_move(start_date, 7, b_day_weekly)
+
+        # dct_start_index = int(start_date.weekday())
+        # for key in b_day_dct.items():
+        #     if dct_start_index <= 4:
+        #         b_day_dct[key] = b_day_weekly[dct_start_index]
+        #         dct_start_index += 1
+        #     else:
+        #         dct_start_index = 0
+        #         b_day_dct[key] = b_day_weekly[dct_start_index]
+        #         dct_start_index += 1
+        #     # if b_day_dct[key] == "Monday":
+        #     #     b_day_dct[key] = b_day_weekly[0]
+        #     # elif b_day_dct[key] == "Tuesday":
+        #     #     b_day_dct[key] = b_day_weekly[1]
+        #     # elif b_day_dct[key] == "Wednesday":
+        #     #     b_day_dct[key] = b_day_weekly[2]
+        #     # elif b_day_dct[key] == "Thursday":
+        #     #     b_day_dct[key] = b_day_weekly[3]
+        #     # else:
+        #     #     b_day_dct[key] = b_day_weekly[4]
                 
         users = {}
         for item in b_day_dct.items():
@@ -88,25 +90,15 @@ def weekend_move(day: date, days:int, birthdays:list):
     i = 0
     for _ in range(days+1):
         
-        if int((day + timedelta(i)).weekday()) <= 4:
-            b_day_dct[week_days[(day + timedelta(i)).weekday()]] = []
+        if (day + timedelta(i)).weekday() <= 4:
+            b_day_dct[week_days[(day + timedelta(i)).weekday()]] = birthdays[(day + timedelta(i)).weekday()]
             i += 1
         else:
             i += 1
         
     return b_day_dct
 
-users = [
-            {
-                "name": "John",
-                "birthday": (date.today() + timedelta(days=5)),
-            },
-            {
-                "name": "Doe",
-                "birthday": (date.today() + timedelta(days=6)),
-            },
-            {"name": "Alice", "birthday": (date.today() + timedelta(days=3))},
-        ]
+
 
 
 if __name__ == "__main__":
