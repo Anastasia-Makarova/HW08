@@ -53,25 +53,6 @@ def get_birthdays_per_week(users):
 
             b_day_dct = weekend_move(start_date, 7, b_day_weekly)
 
-        # dct_start_index = int(start_date.weekday())
-        # for key in b_day_dct.items():
-        #     if dct_start_index <= 4:
-        #         b_day_dct[key] = b_day_weekly[dct_start_index]
-        #         dct_start_index += 1
-        #     else:
-        #         dct_start_index = 0
-        #         b_day_dct[key] = b_day_weekly[dct_start_index]
-        #         dct_start_index += 1
-        #     # if b_day_dct[key] == "Monday":
-        #     #     b_day_dct[key] = b_day_weekly[0]
-        #     # elif b_day_dct[key] == "Tuesday":
-        #     #     b_day_dct[key] = b_day_weekly[1]
-        #     # elif b_day_dct[key] == "Wednesday":
-        #     #     b_day_dct[key] = b_day_weekly[2]
-        #     # elif b_day_dct[key] == "Thursday":
-        #     #     b_day_dct[key] = b_day_weekly[3]
-        #     # else:
-        #     #     b_day_dct[key] = b_day_weekly[4]
                 
         users = {}
         for item in b_day_dct.items():
@@ -97,7 +78,6 @@ def weekend_move(day: date, days:int, birthdays:list):
             i += 1
         
     return b_day_dct
-
 
 
 
